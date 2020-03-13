@@ -15,5 +15,18 @@ namespace CleanArchitecture.Core
         public Guid? LastModifiedByUserId { get; protected set; }
         public DateTime? LastModified { get; protected set; }
         public byte[] RowVersion { get; protected set; }
+        public void Create(Guid? createdByUserId)
+        {
+            CreatedByUserId = createdByUserId;
+            Created = DateTime.Now;
+        }
+        public void Update(Guid? lastModifiedByUserId)
+        {
+            if (lastModifiedByUserId.HasValue)
+            {
+                LastModifiedByUserId = lastModifiedByUserId;
+                LastModified = DateTime.Now;
+            }
+        }
     }
 }
