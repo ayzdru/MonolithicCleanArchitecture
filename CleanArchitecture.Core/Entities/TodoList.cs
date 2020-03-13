@@ -12,6 +12,10 @@ namespace CleanArchitecture.Core.Entities
         public TodoList(string title)
         {
             Title = title;
-        }    
+        }
+        public TodoList()
+        {
+
+        }
     }
 }

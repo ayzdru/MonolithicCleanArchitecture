@@ -14,7 +14,13 @@ namespace CleanArchitecture.Web.Commands
 {    
     public class DeleteTodoListCommand : IRequest<int>
     {
+        public DeleteTodoListCommand(Guid id)
+        {
+            Id = id;
+        }
+
         public Guid Id { get; set; }
+
 
         public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoListCommand, int>
         {

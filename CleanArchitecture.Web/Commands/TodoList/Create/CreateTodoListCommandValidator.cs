@@ -10,9 +10,7 @@ namespace CleanArchitecture.Web.Commands
     {
         public CreateTodoItemCommandValidator()
         {
-            RuleFor(v => v.TodoList.Title)
-                .MaximumLength(200)
-                .NotEmpty();
+            RuleFor(v => v.TodoList.Title).MaximumLength(Constants.TodoList.TitleMaximumLength).MinimumLength(Constants.TodoList.TitleMinimumLength).NotEmpty();
         }
     }
 }

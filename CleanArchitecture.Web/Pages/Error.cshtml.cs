@@ -10,15 +10,15 @@ using Microsoft.Extensions.Logging;
 namespace CleanArchitecture.Web.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public class ErrorModel : PageModel
+    public class ErrorPageModel : PageModel
     {
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        private readonly ILogger<ErrorModel> _logger;
+        private readonly ILogger<ErrorPageModel> _logger;
 
-        public ErrorModel(ILogger<ErrorModel> logger)
+        public ErrorPageModel(ILogger<ErrorPageModel> logger)
         {
             _logger = logger;
         }

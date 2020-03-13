@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Web.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexPageModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IndexPageModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexPageModel(ILogger<IndexPageModel> logger)
         {
             _logger = logger;
         }

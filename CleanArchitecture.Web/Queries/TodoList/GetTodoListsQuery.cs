@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Web.ViewModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Web.Queries
 {
-    public class GetTodoListsQuery :  IRequest<List<TodoList>>
+    public class GetTodoListsQuery :  IRequest<List<TodoListViewModel>>
     {
-        public class GetWeatherForecastsQueryHandler : IRequestHandler<GetTodoListsQuery, List<TodoList>>
+        public class GetWeatherForecastsQueryHandler : IRequestHandler<GetTodoListsQuery, List<TodoListViewModel>>
         {
             private readonly ApplicationDbContext _applicationDbContext;
 
@@ -21,9 +22,9 @@ namespace CleanArchitecture.Web.Queries
                 _applicationDbContext = applicationDbContext;
             }
 
-            public async Task<List<TodoList>> Handle(GetTodoListsQuery request, CancellationToken cancellationToken)
+            public async Task<List<TodoListViewModel>> Handle(GetTodoListsQuery request, CancellationToken cancellationToken)
             {
-                return await _applicationDbContext.TodoLists.ToListAsync();
+                return await _applicationDbContext.TodoLists.Select(q=> new TodoListViewModel(q.Id, q.Title, q.TodoListItems.Count())).ToListAsync();
             }
         }
     }

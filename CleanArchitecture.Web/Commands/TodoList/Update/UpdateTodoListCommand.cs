@@ -29,7 +29,7 @@ namespace CleanArchitecture.Web.Commands
             public async Task<int> Handle(UpdateTodoListCommand request, CancellationToken cancellationToken)
             {
                 var updateColumns = new List<string> { nameof(TodoList.Title) };
-                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).BatchUpdateAsync(new TodoList() { Title = request.Title }, updateColumns);
+                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).BatchUpdateAsync(new TodoList(request.Title), updateColumns, cancellationToken);
 
                 if (affected == 0)
                 {

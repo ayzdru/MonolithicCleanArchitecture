@@ -30,9 +30,6 @@
 
   <ItemGroup>
     <Folder Include="Behaviours\" />
-    <Folder Include="ApiModels\" />
-    <Folder Include="BindingModels\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>

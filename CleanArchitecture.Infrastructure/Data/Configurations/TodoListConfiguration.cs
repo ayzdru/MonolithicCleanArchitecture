@@ -13,7 +13,7 @@ namespace CleanArchitecture.Infrastructure.Data.Configurations
         public override void Configure(EntityTypeBuilder<TodoList> builder)
         {
             base.Configure(builder);
-            builder.Property(b => b.Title).HasMaxLength(Constants.TodoList.Title.MaximumLength).IsRequired(Constants.TodoList.Title.Required);
+            builder.Property(b => b.Title).HasMaxLength(Constants.TodoList.TitleMaximumLength).IsRequired(Constants.TodoList.TitleRequired);
             builder.Metadata.FindNavigation(nameof(TodoList.TodoListItems)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }        
     }
