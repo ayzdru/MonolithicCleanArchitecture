@@ -37,7 +37,15 @@ namespace CleanArchitecture.Web.Pages
                 var creatTodoListId = await Mediator.Send(new CreateTodoListCommand(new TodoList(createTodoListBindingModel.Title)));
                 if(creatTodoListId.HasValue)
                 {
-                    return new JsonResult(new AlertApiModel("Create Todo List", $"{createTodoListBindingModel.Title} oluşturuldu.", new { Id = creatTodoListId.Value }));
+                    return new JsonResult(new AlertApiModel("Create Todo List", $"{createTodoListBindingModel.Title} created.", new { Id = creatTodoListId.Value }));
+                }
+                else
+                {
+                    return new JsonResult(new AlertApiModel("Create Todo List", $"The List could not be created."))
+                    {
+
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
                 }
             }
             return new JsonResult(new AlertApiModel("Create Todo List", ModelState.GetModelStateErrors()))
@@ -53,17 +61,136 @@ namespace CleanArchitecture.Web.Pages
                 var deleteTodoListCommandAffected = await Mediator.Send(new DeleteTodoListCommand(deleteTodoListBindingModel.TodoListId.Value));
                 if (deleteTodoListCommandAffected != 0)
                 {
-                    return new JsonResult(new AlertApiModel("Delete Todo List", $"Liste silindi."));
+                    return new JsonResult(new AlertApiModel("Delete Todo List", $"The List deleted."));
                 }
                 else
                 {
-                    return new JsonResult(new AlertApiModel("Delete Todo List", $"Liste silinemedi.")) {
+                    return new JsonResult(new AlertApiModel("Delete Todo List", $"The List could not be deleted.")) {
 
                         StatusCode = StatusCodes.Status500InternalServerError
                     };
                 }
             }
             return new JsonResult(new AlertApiModel("Create Todo List", ModelState.GetModelStateErrors()))
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        }
+        public UpdateTodoListBindingModel UpdateTodoListBindingModel { get; set; }
+        public async Task<IActionResult> OnPostUpdateTodoList(UpdateTodoListBindingModel updateTodoListBindingModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var updateTodoListAffected = await Mediator.Send(new UpdateTodoListCommand(updateTodoListBindingModel.TodoListId.Value,updateTodoListBindingModel.Title));
+                if (updateTodoListAffected!=0)
+                {
+                    return new JsonResult(new AlertApiModel("Update Todo List", $"The List updated."));
+                }
+                else
+                {
+                    return new JsonResult(new AlertApiModel("Update Todo List", $"The List could not be updated."))
+                    {
+
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                }
+            }
+            return new JsonResult(new AlertApiModel("Update Todo List", ModelState.GetModelStateErrors()))
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        }
+        public GetTodoListItemsBindingModel GetTodoListItemsBindingModel { get; set; }
+        public async Task<IActionResult> OnPostGetTodoListItems(GetTodoListItemsBindingModel getTodoListItemsBindingModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var todoListItems = await Mediator.Send(new GetTodoListItemsQuery(getTodoListItemsBindingModel.TodoListId.Value));
+                if (todoListItems!=null)
+                {
+                    return new JsonResult(todoListItems);
+                }
+                else
+                {
+                    return new JsonResult(new AlertApiModel("Get Todo List Items", $"The List Items could not be fetched."))
+                    {
+
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                }
+            }
+            return new JsonResult(new AlertApiModel("Get Todo List Items", ModelState.GetModelStateErrors()))
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        }
+        public CreateTodoListItemBindingModel CreateTodoListItemBindingModel { get; set; }
+        public async Task<IActionResult> OnPostCreateTodoListItem(CreateTodoListItemBindingModel createTodoListItemBindingModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var creatTodoListItemId = await Mediator.Send(new CreateTodoListItemCommand(new TodoListItem(createTodoListItemBindingModel.TodoListId.Value, createTodoListItemBindingModel.Title, createTodoListItemBindingModel.Description)));
+                if (creatTodoListItemId.HasValue)
+                {
+                    return new JsonResult(new AlertApiModel("Create Todo List Item", $"{createTodoListItemBindingModel.Title} created.", new { Id = creatTodoListItemId.Value }));
+                }
+                else
+                {
+                    return new JsonResult(new AlertApiModel("Create Todo List Item", $"The List Item could not be created."))
+                    {
+
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                }
+            }
+            return new JsonResult(new AlertApiModel("Create Todo List Item", ModelState.GetModelStateErrors()))
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        }
+        public async Task<IActionResult> OnPostUpdateTodoListItem(UpdateTodoListItemBindingModel  updateTodoListItemBindingModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var updateTodoListItemAffected = await Mediator.Send(new UpdateTodoListItemCommand(updateTodoListItemBindingModel.TodoListItemId.Value, updateTodoListItemBindingModel.IsDone.Value));
+                if (updateTodoListItemAffected != 0)
+                {
+                    return new JsonResult(new AlertApiModel("Update Todo List Item", $"The List Item updated."));
+                }
+                else
+                {
+                    return new JsonResult(new AlertApiModel("Update Todo List Item", $"The List Item could not be updated."))
+                    {
+
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                }
+            }
+            return new JsonResult(new AlertApiModel("Update Todo List Item", ModelState.GetModelStateErrors()))
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        }
+        public DeleteTodoListItemBindingModel DeleteTodoListItemBindingModel { get; set; }
+        public async Task<IActionResult> OnPostDeleteTodoListItem(DeleteTodoListItemBindingModel deleteTodoListItemBindingModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var creatTodoListItemId = await Mediator.Send(new DeleteTodoListItemCommand(deleteTodoListItemBindingModel.TodoListItemId.Value));
+                if (creatTodoListItemId !=0)
+                {
+                    return new JsonResult(new AlertApiModel("Delete Todo List Item", $"The List Item deleted."));
+                }
+                else
+                {
+                    return new JsonResult(new AlertApiModel("Delete Todo List Item", $"The List Item could not be deleted."))
+                    {
+
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                }
+            }
+            return new JsonResult(new AlertApiModel("Delete Todo List Item", ModelState.GetModelStateErrors()))
             {
                 StatusCode = StatusCodes.Status400BadRequest
             };

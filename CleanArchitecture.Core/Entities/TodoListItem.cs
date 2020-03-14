@@ -11,15 +11,19 @@ namespace CleanArchitecture.Core.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsDone { get; private set; }
+        public TodoListItem()
+        {
+
+        }
         public TodoListItem(Guid todoListId, string title, string description)
         {
             TodoListId = todoListId;
             Title = title;
             Description = description;
         }
-        public void MarkComplete()
+        public void ChangeStatus(bool isDone)
         {
-            IsDone = true;         
+            IsDone = isDone;         
         }
     }
 }

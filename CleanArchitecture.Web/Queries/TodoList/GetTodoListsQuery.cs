@@ -13,11 +13,11 @@ namespace CleanArchitecture.Web.Queries
 {
     public class GetTodoListsQuery :  IRequest<List<TodoListViewModel>>
     {
-        public class GetWeatherForecastsQueryHandler : IRequestHandler<GetTodoListsQuery, List<TodoListViewModel>>
+        public class GetTodoListsQueryQueryHandler : IRequestHandler<GetTodoListsQuery, List<TodoListViewModel>>
         {
             private readonly ApplicationDbContext _applicationDbContext;
 
-            public GetWeatherForecastsQueryHandler(ApplicationDbContext applicationDbContext)
+            public GetTodoListsQueryQueryHandler(ApplicationDbContext applicationDbContext)
             {
                 _applicationDbContext = applicationDbContext;
             }

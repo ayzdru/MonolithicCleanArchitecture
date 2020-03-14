@@ -12,30 +12,28 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Web.Commands
 {    
-    public class UpdateTodoListCommand : IRequest<int>
-    {        
-
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public UpdateTodoListCommand(Guid id, string title)
+    public class DeleteTodoListItemCommand : IRequest<int>
+    {
+        public DeleteTodoListItemCommand(Guid id)
         {
             Id = id;
-            Title = title;
         }
 
-        public class UpdateTodoListCommandHandler : IRequestHandler<UpdateTodoListCommand, int>
+        public Guid Id { get; set; }
+
+
+        public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoListItemCommand, int>
         {
             private readonly ApplicationDbContext _applicationDbContext;
 
-            public UpdateTodoListCommandHandler(ApplicationDbContext applicationDbContext)
+            public DeleteTodoItemCommandHandler(ApplicationDbContext applicationDbContext)
             {
                 _applicationDbContext = applicationDbContext;
             }
 
-            public async Task<int> Handle(UpdateTodoListCommand request, CancellationToken cancellationToken)
+            public async Task<int> Handle(DeleteTodoListItemCommand request, CancellationToken cancellationToken)
             {
-                var updateColumns = new List<string> { nameof(TodoList.Title) };
-                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).BatchUpdateAsync(new TodoList(request.Title), updateColumns, cancellationToken);
+                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).BatchDeleteAsync();
 
                 if (affected == 0)
                 {

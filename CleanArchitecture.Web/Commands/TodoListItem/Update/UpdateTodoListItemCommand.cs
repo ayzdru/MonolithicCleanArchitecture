@@ -12,30 +12,32 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Web.Commands
 {    
-    public class UpdateTodoListCommand : IRequest<int>
+    public class UpdateTodoListItemCommand : IRequest<int>
     {        
 
         public Guid Id { get; set; }
-        public string Title { get; set; }
-        public UpdateTodoListCommand(Guid id, string title)
+        public bool IsDone { get; set; }
+        public UpdateTodoListItemCommand(Guid id, bool isDone)
         {
             Id = id;
-            Title = title;
+            IsDone = isDone;
         }
 
-        public class UpdateTodoListCommandHandler : IRequestHandler<UpdateTodoListCommand, int>
+        public class UpdateTodoListItemCommandHandler : IRequestHandler<UpdateTodoListItemCommand, int>
         {
             private readonly ApplicationDbContext _applicationDbContext;
 
-            public UpdateTodoListCommandHandler(ApplicationDbContext applicationDbContext)
+            public UpdateTodoListItemCommandHandler(ApplicationDbContext applicationDbContext)
             {
                 _applicationDbContext = applicationDbContext;
             }
 
-            public async Task<int> Handle(UpdateTodoListCommand request, CancellationToken cancellationToken)
+            public async Task<int> Handle(UpdateTodoListItemCommand request, CancellationToken cancellationToken)
             {
-                var updateColumns = new List<string> { nameof(TodoList.Title) };
-                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).BatchUpdateAsync(new TodoList(request.Title), updateColumns, cancellationToken);
+                var updateColumns = new List<string> { nameof(TodoListItem.IsDone) };
+                var todoListItem = new TodoListItem();
+                todoListItem.ChangeStatus(request.IsDone);
+                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).BatchUpdateAsync(todoListItem, updateColumns, cancellationToken);
 
                 if (affected == 0)
                 {

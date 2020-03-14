@@ -17,6 +17,7 @@ namespace CleanArchitecture.Infrastructure.Data
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         public DbSet<TodoList>  TodoLists { get; set; }
+        public DbSet<TodoListItem> TodoListItems { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
              : base(options)
         {
