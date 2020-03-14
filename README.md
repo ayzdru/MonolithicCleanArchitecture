@@ -1,2 +1,1 @@
-# CleanArchitecture
-Clean Architecture with ASP.NET Core
+# ASP.NET Core Clean Architecture with CQRS
