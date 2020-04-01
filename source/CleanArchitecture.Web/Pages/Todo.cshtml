@@ -21,6 +21,15 @@
         .done {
             background-color: #55ff7c !important;
         }
+        .field-validation-error {
+            display: block;
+            padding: 3px;
+            color: #fff;
+            background-color: red;
+            border-radius: 0px 0px 5px 5px;
+            margin-top: -2px;
+            margin-bottom: 15px;
+        }
     </style>
 }
 <h1>@ViewData["Title"]</h1>
@@ -80,6 +89,7 @@
                         <div class="form-group">
                             <label asp-for="CreateTodoListBindingModel.Title" class="col-form-label"></label>
                             <input asp-for="CreateTodoListBindingModel.Title" type="text" class="form-control">
+                            <span asp-validation-for="CreateTodoListBindingModel.Title"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -105,6 +115,7 @@
                         <div class="form-group">
                             <label asp-for="UpdateTodoListBindingModel.Title" class="col-form-label"></label>
                             <input asp-for="UpdateTodoListBindingModel.Title" type="text" class="form-control">
+                            <span asp-validation-for="UpdateTodoListBindingModel.Title"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -152,10 +163,12 @@
                         <div class="form-group">
                             <label asp-for="CreateTodoListItemBindingModel.Title" class="col-form-label"></label>
                             <input asp-for="CreateTodoListItemBindingModel.Title" type="text" class="form-control">
+                            <span asp-validation-for="CreateTodoListItemBindingModel.Title"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="CreateTodoListItemBindingModel.Description" class="col-form-label"></label>
                             <input asp-for="CreateTodoListItemBindingModel.Description" type="text" class="form-control">
+                            <span asp-validation-for="CreateTodoListItemBindingModel.Description"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -239,7 +252,7 @@
             formSubmit(this, 'CreateTodoListItemModal', function (data) {
                 var title = $('#CreateTodoListItemBindingModel_Title').val();
                 var description = $('#CreateTodoListItemBindingModel_Description').val();
-                createTodoListItem(data.id, title, description, false);
+                createTodoListItem(data.body.id, title, description, false);
                 setTodoListItemsCount(true);
                 clearForm('CreateTodoListItemForm');
             });
