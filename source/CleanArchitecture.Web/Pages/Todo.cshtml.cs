@@ -7,14 +7,13 @@ using CleanArchitecture.Infrastructure.Extensions;
 using CleanArchitecture.Web.BindingModels;
 using CleanArchitecture.Application.Commands;
 using CleanArchitecture.Application.Queries;
-using CleanArchitecture.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Zanha.Pay.Shared.ApiModels;
 using Microsoft.EntityFrameworkCore;
-using CleanArchitecture.Web.ApiModels;
+using CleanArchitecture.Application.ViewModels;
+using Zanha.Pay.Shared.ApiModels;
 
 namespace CleanArchitecture.Web.Pages
 {
@@ -23,7 +22,7 @@ namespace CleanArchitecture.Web.Pages
         public List<TodoListViewModel> TodoListViewModel { get; set; }
         public async Task OnGet()
         {
-            TodoListViewModel = await (await Mediator.Send(new GetTodoListsQuery())).Select(q=> new TodoListViewModel(q.Id,q.Title, q.TodoListItems.Count())).ToListAsync();
+            TodoListViewModel =await Mediator.Send(new GetTodoListsQuery());
         }
         public CreateTodoListBindingModel  CreateTodoListBindingModel { get; set; }
         public async Task<IActionResult> OnPostCreateTodoList(CreateTodoListBindingModel createTodoListBindingModel)
@@ -101,7 +100,7 @@ namespace CleanArchitecture.Web.Pages
         {
             if (ModelState.IsValid)
             {
-                var todoListItems = await (await Mediator.Send(new GetTodoListItemsQuery(getTodoListItemsBindingModel.TodoListId.Value))).Select(q => new TodoListItemApiModel(q.Id, q.Title, q.Description, q.IsDone)).ToListAsync();
+                var todoListItems = await Mediator.Send(new GetTodoListItemsQuery(getTodoListItemsBindingModel.TodoListId.Value));
                 if (todoListItems!=null)
                 {
                     return new JsonResult(todoListItems);

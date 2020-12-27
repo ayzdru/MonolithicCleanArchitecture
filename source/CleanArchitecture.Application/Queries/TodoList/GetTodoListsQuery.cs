@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Core.Entities;
+﻿using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Queries
 {
-    public class GetTodoListsQuery :  IRequest<IQueryable<TodoList>>
+    public class GetTodoListsQuery :  IRequest<List<TodoListViewModel>>
     {
-        public class GetTodoListsQueryQueryHandler : IRequestHandler<GetTodoListsQuery, IQueryable<TodoList>>
+        public class GetTodoListsQueryQueryHandler : IRequestHandler<GetTodoListsQuery, List<TodoListViewModel>>
         {
             private readonly IApplicationDbContext _applicationDbContext;
 
@@ -20,9 +21,9 @@ namespace CleanArchitecture.Application.Queries
                 _applicationDbContext = applicationDbContext;
             }
 
-            public Task<IQueryable<TodoList>> Handle(GetTodoListsQuery request, CancellationToken cancellationToken)
+            public Task<List<TodoListViewModel>> Handle(GetTodoListsQuery request, CancellationToken cancellationToken)
             {
-                return Task.FromResult(_applicationDbContext.TodoLists.AsQueryable());
+                return _applicationDbContext.TodoLists.Select(q => new TodoListViewModel(q.Id, q.Title, q.TodoListItems.Count())).ToListAsync(cancellationToken);
             }
         }
     }
