@@ -7,7 +7,6 @@ namespace CleanArchitecture.Web.ApiModels
 {
     public class TodoListItemApiModel
     {       
-
         public Guid TodoListItemId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

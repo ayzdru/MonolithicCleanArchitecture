@@ -5,29 +5,25 @@ using System.Threading.Tasks;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Extensions;
 using CleanArchitecture.Web.BindingModels;
-using CleanArchitecture.Web.Commands;
-using CleanArchitecture.Web.Queries;
+using CleanArchitecture.Application.Commands;
+using CleanArchitecture.Application.Queries;
 using CleanArchitecture.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Zanha.Pay.Shared.ApiModels;
+using Microsoft.EntityFrameworkCore;
+using CleanArchitecture.Web.ApiModels;
 
 namespace CleanArchitecture.Web.Pages
 {
     public class TodoPageModel : BasePageModel
-    {
-        private readonly ILogger<TodoPageModel> _logger;
-
-        public TodoPageModel(ILogger<TodoPageModel> logger)
-        {
-            _logger = logger;
-        }
+    {      
         public List<TodoListViewModel> TodoListViewModel { get; set; }
         public async Task OnGet()
         {
-            TodoListViewModel = await Mediator.Send(new GetTodoListsQuery());
+            TodoListViewModel = await (await Mediator.Send(new GetTodoListsQuery())).Select(q=> new TodoListViewModel(q.Id,q.Title, q.TodoListItems.Count())).ToListAsync();
         }
         public CreateTodoListBindingModel  CreateTodoListBindingModel { get; set; }
         public async Task<IActionResult> OnPostCreateTodoList(CreateTodoListBindingModel createTodoListBindingModel)
@@ -105,7 +101,7 @@ namespace CleanArchitecture.Web.Pages
         {
             if (ModelState.IsValid)
             {
-                var todoListItems = await Mediator.Send(new GetTodoListItemsQuery(getTodoListItemsBindingModel.TodoListId.Value));
+                var todoListItems = await (await Mediator.Send(new GetTodoListItemsQuery(getTodoListItemsBindingModel.TodoListId.Value))).Select(q => new TodoListItemApiModel(q.Id, q.Title, q.Description, q.IsDone)).ToListAsync();
                 if (todoListItems!=null)
                 {
                     return new JsonResult(todoListItems);

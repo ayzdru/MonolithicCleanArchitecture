@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,9 +8,14 @@ namespace CleanArchitecture.Infrastructure.Data
 {
     public static class ApplicationDbContextSeed
     {
-        public static void UseDbContextSeed(this IServiceProvider serviceProvider)
+        public static IHost Seed(this IHost host)
         {
-
+            using (var serviceScope = host.Services.CreateScope())
+            {               
+                var applicationDbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                //Seed kodları buraya
+            }
+            return host;
         }
     }
 }

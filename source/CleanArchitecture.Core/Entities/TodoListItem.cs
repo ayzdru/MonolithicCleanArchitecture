@@ -8,8 +8,8 @@ namespace CleanArchitecture.Core.Entities
     {     
         public TodoList TodoList { get; private set; }
         public Guid TodoListId { get; private set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
         public bool IsDone { get; private set; }
         public TodoListItem()
         {

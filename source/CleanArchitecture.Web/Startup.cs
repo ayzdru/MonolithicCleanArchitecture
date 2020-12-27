@@ -12,11 +12,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CleanArchitecture.Infrastructure.Data;
-using MediatR;
-using CleanArchitecture.Web.Behaviours;
+
 using System.Reflection;
 using CleanArchitecture.Core.Entities;
 using Microsoft.AspNetCore.Http;
+using CleanArchitecture.Infrastructure.IoC;
 
 namespace CleanArchitecture.Web
 {
@@ -38,10 +38,8 @@ namespace CleanArchitecture.Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();            
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddInfrastructure();        
             var mvcBuilder = services.AddRazorPages();
 #if DEBUG
             if (WebHostEnvironment.IsDevelopment())
@@ -54,10 +52,10 @@ namespace CleanArchitecture.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseInfrastructure();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {

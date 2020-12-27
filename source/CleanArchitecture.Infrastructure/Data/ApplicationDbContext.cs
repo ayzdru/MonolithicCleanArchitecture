@@ -1,5 +1,7 @@
-﻿using CleanArchitecture.Core;
+﻿using CleanArchitecture.Application;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Extensions;
 using CleanArchitecture.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,17 +15,17 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public DbSet<TodoList>  TodoLists { get; set; }
+        public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
              : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
         }
-      
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var userId = _httpContextAccessor.HttpContext.User.GetUserId();
