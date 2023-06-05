@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,14 @@ namespace CleanArchitecture.Infrastructure.Data
             {               
                 var applicationDbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                 //Seed kodları buraya
+                try
+                {
+                    applicationDbContext.Database.Migrate();
+                }
+                catch
+                {
+
+                }
             }
             return host;
         }

@@ -15,7 +15,7 @@ using CleanArchitecture.Core.Exceptions;
 
 namespace CleanArchitecture.Application.Behaviours
 {
-    public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
 
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -31,17 +31,13 @@ namespace CleanArchitecture.Application.Behaviours
             _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
 
             if (authorizeAttributes.Any())
             {              
-                var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-                if (user == null)
-                {
-                    throw new UnauthorizedAccessException();
-                }
+                var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User) ?? throw new UnauthorizedAccessException();
 
                 // Role-based authorization
                 var authorizeAttributesWithRoles = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));

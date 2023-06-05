@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Behaviours
 {
-    public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly Stopwatch _timer;
         private readonly ILogger<TRequest> _logger;
@@ -24,7 +24,7 @@ namespace CleanArchitecture.Application.Behaviours
             _userManager = userManager;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             _timer.Start();
 

@@ -45,7 +45,7 @@
             </button>
         </div>
         <ul id="TodoLists" class="list-group">
-            @foreach (var todoList in Model.TodoListViewModel)
+            @foreach (var todoList in Model.TodoList)
             {
                 <li id="TodoList-@todoList.Id" data-id="@todoList.Id" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                     @todoList.Title
