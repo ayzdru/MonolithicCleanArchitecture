@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CleanArchitecture.Core.Interfaces;
+using CleanArchitecture.Application.Interfaces;
 
 namespace CleanArchitecture.Application.Commands
 {    

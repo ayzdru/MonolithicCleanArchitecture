@@ -7,6 +7,7 @@ using CleanArchitecture.Core.Entities;
 using System.Threading;
 using CleanArchitecture.Application.Notifications;
 using CleanArchitecture.Application;
+using CleanArchitecture.Application.Interfaces;
 
 namespace CleanArchitecture.Application.Commands
 {

@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Models;
+﻿using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.Models;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

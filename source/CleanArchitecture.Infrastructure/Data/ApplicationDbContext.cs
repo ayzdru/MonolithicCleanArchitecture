@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application;
+﻿using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Extensions;

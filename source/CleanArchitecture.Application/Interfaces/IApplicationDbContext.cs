@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application
+namespace CleanArchitecture.Application.Interfaces
 {
     public interface IApplicationDbContext
     {

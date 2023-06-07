@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Extensions;
+using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
 using MediatR;

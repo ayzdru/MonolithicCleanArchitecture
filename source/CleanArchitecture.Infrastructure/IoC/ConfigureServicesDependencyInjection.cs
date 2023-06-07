@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application;
 using CleanArchitecture.Application.Behaviours;
+using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.IoC;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces;
