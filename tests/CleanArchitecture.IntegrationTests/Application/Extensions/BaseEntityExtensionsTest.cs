@@ -14,7 +14,7 @@ namespace CleanArchitecture.IntegrationTests.Application.Extensions
         [Fact]
         public void GetById()
         {
-            var todoList = new TodoList();
+            var todoList = new TodoList("TEST");
             _dbContext.TodoLists.Add(todoList);
             _dbContext.SaveChanges();
             var getByIdTodoList =_dbContext.TodoLists.GetById(todoList.Id).SingleOrDefault();

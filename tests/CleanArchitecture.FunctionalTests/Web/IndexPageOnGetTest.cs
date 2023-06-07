@@ -7,10 +7,10 @@ using Xunit;
 
 namespace CleanArchitecture.FunctionalTests.Web
 {
-    public class IndexPageOnGetTest : IClassFixture<CustomWebApplicationFactory>
+    public class IndexPageOnGetTest : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         public HttpClient Client { get; }
-        public IndexPageOnGetTest(CustomWebApplicationFactory factory)
+        public IndexPageOnGetTest(CustomWebApplicationFactory<Program> factory)
         {
             Client = factory.CreateClient();
         }

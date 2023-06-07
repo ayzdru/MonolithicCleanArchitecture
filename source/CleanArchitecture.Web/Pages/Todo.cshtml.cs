@@ -12,14 +12,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using CleanArchitecture.Application.DataTransferObjects;
-using Zanha.Pay.Shared.ApiModels;
+using CleanArchitecture.Application.Models;
+using CleanArchitecture.Web.ApiModels.Response;
 
 namespace CleanArchitecture.Web.Pages
 {
     public class TodoPageModel : BasePageModel
     {      
-        public List<TodoListDTO> TodoList { get; set; }
+        public List<TodoListModel> TodoList { get; set; }
         public async Task OnGet()
         {
             TodoList =await Mediator.Send(new GetTodoListsQuery());

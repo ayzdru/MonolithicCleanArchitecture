@@ -3,7 +3,8 @@ using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Extensions;
 using CleanArchitecture.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Http;
+using CleanArchitecture.Infrastructure.Interceptors;
+using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,38 +18,30 @@ namespace CleanArchitecture.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMediator _mediator;
+        private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
         public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
              : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            var userId = _httpContextAccessor.HttpContext.User.GetUserId();
-            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.Create(userId);
-                        break;
-                    case EntityState.Modified:
-                        entry.Entity.Update(userId);
-                        break;
-                }
-            }
-
-            return base.SaveChangesAsync(cancellationToken);
-        }
+            _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
+        }      
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
+        }
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await _mediator.DispatchDomainEvents(this);
+
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

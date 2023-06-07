@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.DataTransferObjects;
+﻿using CleanArchitecture.Application.Models;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Queries
 {
-    public class GetTodoListsQuery :  IRequest<List<TodoListDTO>>
+    public class GetTodoListsQuery :  IRequest<List<TodoListModel>>
     {
-        public class GetTodoListsQueryQueryHandler : IRequestHandler<GetTodoListsQuery, List<TodoListDTO>>
+        public class GetTodoListsQueryQueryHandler : IRequestHandler<GetTodoListsQuery, List<TodoListModel>>
         {
             private readonly IApplicationDbContext _applicationDbContext;
 
@@ -21,9 +21,9 @@ namespace CleanArchitecture.Application.Queries
                 _applicationDbContext = applicationDbContext;
             }
 
-            public Task<List<TodoListDTO>> Handle(GetTodoListsQuery request, CancellationToken cancellationToken)
+            public Task<List<TodoListModel>> Handle(GetTodoListsQuery request, CancellationToken cancellationToken)
             {
-                return _applicationDbContext.TodoLists.Select(q => new TodoListDTO(q.Id, q.Title, q.TodoListItems.Count())).ToListAsync(cancellationToken);
+                return _applicationDbContext.TodoLists.Select(q => new TodoListModel(q.Id, q.Title, q.TodoListItems.Count())).ToListAsync(cancellationToken);
             }
         }
     }

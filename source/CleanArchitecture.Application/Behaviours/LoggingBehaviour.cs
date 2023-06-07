@@ -1,33 +1,37 @@
-﻿using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Extensions;
+﻿using CleanArchitecture.Core.Interfaces;
 using MediatR.Pipeline;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.Behaviours
+namespace CleanArchitecture.Application.Behaviours;
+
+public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
-    public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest>
+    private readonly ILogger _logger;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IIdentityService _identityService;
+
+    public LoggingBehaviour(ILogger<TRequest> logger, ICurrentUserService currentUserService, IIdentityService identityService)
     {
-        private readonly ILogger _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public LoggingBehaviour(ILogger<TRequest> logger, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
+        _logger = logger;
+        _currentUserService = currentUserService;
+        _identityService = identityService;
+    }
+
+    public async Task Process(TRequest request, CancellationToken cancellationToken)
+    {
+        var requestName = typeof(TRequest).Name;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
+        string? userName = string.Empty;
+
+        if (_currentUserService.UserId.HasValue)
         {
-            _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
+            userName = await _identityService.GetUserNameAsync(userId);
         }
 
-        public Task Process(TRequest request, CancellationToken cancellationToken)
-        {
-            var requestName = typeof(TRequest).Name;
-            var userId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var userName = userId.HasValue ?  _userManager.GetUserName(_httpContextAccessor.HttpContext.User) : string.Empty;
-            _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@UserName} {@Request}", requestName, userId, userName ,request);
-            return Task.CompletedTask;
-        }
+        _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@UserName} {@Request}",
+            requestName, userId, userName, request);
     }
 }

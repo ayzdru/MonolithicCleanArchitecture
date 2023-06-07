@@ -12,7 +12,8 @@
     );
 }
 function successAlert(data) {
-    if (data) {5
+    if (data) {
+        5
         showAlert(data.title, data.message, 'success');
     }
 }
@@ -49,14 +50,14 @@ function formSubmit(form, modalId, onSuccess, hideAlert) {
                 $modal.modal('hide');
                 if (hideAlert == false) {
                     successAlert(data);
-                }               
+                }
                 if (onSuccess) {
                     onSuccess(data);
                 }
             },
-            error: function (error) {              
-                errorAlert(error.responseJSON);               
+            error: function (error) {
+                errorAlert(error.responseJSON);
             }
-        });        
+        });
     }
 }

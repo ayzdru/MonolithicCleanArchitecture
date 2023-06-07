@@ -21,6 +21,11 @@ namespace CleanArchitecture.Core.Entities
             Title = title;
             Description = description;
         }
+        public TodoListItem(string title, string description)
+        {          
+            Title = title;
+            Description = description;
+        }
         public void ChangeStatus(bool isDone)
         {
             IsDone = isDone;         

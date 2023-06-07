@@ -1,10 +1,18 @@
 ﻿using CleanArchitecture.Application;
 using CleanArchitecture.Application.Behaviours;
 using CleanArchitecture.Application.IoC;
+using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Infrastructure.Interceptors;
+using CleanArchitecture.Infrastructure.Services;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +24,20 @@ namespace CleanArchitecture.Infrastructure.IoC
 {
     public static class ConfigureServicesDependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            services.AddHttpContextAccessor();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(
+                configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            if (webHostEnvironment.IsDevelopment())
+            {
+                services.AddScoped<ApplicationDbContextInitialiser>();
+            }
             services.AddApplication();
             return services;
         }

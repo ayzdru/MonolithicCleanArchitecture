@@ -3,22 +3,24 @@ using CleanArchitecture.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text;
 
 namespace CleanArchitecture.FunctionalTests.Web
 {
-    public class CustomWebApplicationFactory : WebApplicationFactory<Startup>
+    public class CustomWebApplicationFactory<TProgram>
+    : WebApplicationFactory<TProgram> where TProgram : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder
-                .UseSolutionRelativeContentRoot("source/CleanArchitecture.Web")
-                .ConfigureServices(services =>
+            builder.ConfigureServices(services =>
             {
                 // Create a new service provider.
                 var serviceProvider = new ServiceCollection()
@@ -33,7 +35,6 @@ namespace CleanArchitecture.FunctionalTests.Web
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 
-
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
 
@@ -47,6 +48,8 @@ namespace CleanArchitecture.FunctionalTests.Web
                     db.Database.EnsureCreated();
                 }
             });
+
+            builder.UseEnvironment("Development");
         }
     }
 }
