@@ -18,9 +18,5 @@
 		<ProjectReference Include="..\CleanArchitecture.Core\CleanArchitecture.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="ApiModels\Request\" />
-	</ItemGroup>
-
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application;
-using CleanArchitecture.Application.ApiModels;
+using CleanArchitecture.Application.Models;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Core.Entities;
 using MediatR;
@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Queries
 {
-    public class GetTodoListItemsQuery :  IRequest<List<TodoListItemApiModel>>
+    public class GetTodoListItemsQuery :  IRequest<List<TodoListItemModel>>
     {       
         public Guid TodoListId { get; set; }
         public GetTodoListItemsQuery(Guid todoListId)
         {
             TodoListId = todoListId;
         }
-        public class GetTodoListItemsQueryHandler : IRequestHandler<GetTodoListItemsQuery, List<TodoListItemApiModel>>
+        public class GetTodoListItemsQueryHandler : IRequestHandler<GetTodoListItemsQuery, List<TodoListItemModel>>
         {
             private readonly IApplicationDbContext _applicationDbContext;
 
@@ -28,9 +28,9 @@ namespace CleanArchitecture.Application.Queries
                 _applicationDbContext = applicationDbContext;
             }
 
-            public Task<List<TodoListItemApiModel>> Handle(GetTodoListItemsQuery request, CancellationToken cancellationToken)
+            public Task<List<TodoListItemModel>> Handle(GetTodoListItemsQuery request, CancellationToken cancellationToken)
             {
-                return _applicationDbContext.TodoListItems.GetByTodoListId(request.TodoListId).Select(q => new TodoListItemApiModel(q.Id, q.Title, q.Description, q.IsDone)).ToListAsync(cancellationToken);
+                return _applicationDbContext.TodoListItems.GetByTodoListId(request.TodoListId).Select(q => new TodoListItemModel(q.Id, q.Title, q.Description, q.IsDone)).ToListAsync(cancellationToken);
             }
         }
     }

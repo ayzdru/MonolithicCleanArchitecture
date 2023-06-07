@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.ApiModels
+namespace CleanArchitecture.Application.Models
 {
-    public class TodoListItemApiModel
+    public class TodoListItemModel
     {       
         public Guid TodoListItemId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsDone { get; set; }
-        public TodoListItemApiModel(Guid todoListItemId, string title, string description, bool isDone)
+        public TodoListItemModel(Guid todoListItemId, string title, string description, bool isDone)
         {
             TodoListItemId = todoListItemId;
             Title = title;
