@@ -11,21 +11,23 @@ namespace CleanArchitecture.Infrastructure.Extensions
 {
     public static class MediatorExtensions
     {
-        public static async Task DispatchDomainEvents(this IMediator mediator, DbContext context)
+        public static async Task DispatchNotifications(this IMediator mediator, DbContext context)
         {
             var entities = context.ChangeTracker
                 .Entries<BaseEntity>()
-                .Where(e => e.Entity.DomainEvents.Any())
+                .Where(e => e.Entity.Notifications.Any())
                 .Select(e => e.Entity);
 
-            var domainEvents = entities
-                .SelectMany(e => e.DomainEvents)
+            var notifications = entities
+                .SelectMany(e => e.Notifications)
                 .ToList();
 
-            entities.ToList().ForEach(e => e.ClearDomainEvents());
+            entities.ToList().ForEach(e => e.ClearNotifications());
 
-            foreach (var domainEvent in domainEvents)
-                await mediator.Publish(domainEvent);
+            foreach (var notification in notifications)
+            {
+                await mediator.Publish(notification);
+            }
         }
     }
 }

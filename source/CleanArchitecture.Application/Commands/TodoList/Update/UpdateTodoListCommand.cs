@@ -1,14 +1,13 @@
 ﻿using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
-using EFCore.BulkExtensions;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace CleanArchitecture.Application.Commands
 {    
     public class UpdateTodoListCommand : IRequest<int>
@@ -33,8 +32,8 @@ namespace CleanArchitecture.Application.Commands
 
             public async Task<int> Handle(UpdateTodoListCommand request, CancellationToken cancellationToken)
             {
-                var updateColumns = new List<string> { nameof(TodoList.Title) };
-                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).BatchUpdateAsync(new TodoList(request.Title), updateColumns, cancellationToken);
+                
+                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.Title, request.Title));
 
                 if (affected == 0)
                 {

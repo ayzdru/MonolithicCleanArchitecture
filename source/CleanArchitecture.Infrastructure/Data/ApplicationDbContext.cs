@@ -39,7 +39,7 @@ namespace CleanArchitecture.Infrastructure.Data
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await _mediator.DispatchDomainEvents(this);
+            await _mediator.DispatchNotifications(this);
 
             return await base.SaveChangesAsync(cancellationToken);
         }

@@ -124,7 +124,7 @@ namespace CleanArchitecture.Web.Pages
         {
             if (ModelState.IsValid)
             {
-                var creatTodoListItemId = await Mediator.Send(new CreateTodoListItemCommand(new TodoListItem(createTodoListItemBindingModel.TodoListId.Value, createTodoListItemBindingModel.Title, createTodoListItemBindingModel.Description)));
+                var creatTodoListItemId = await Mediator.Send(new CreateTodoListItemCommand(new TodoListItem(createTodoListItemBindingModel.TodoListId.Value, createTodoListItemBindingModel.Title, createTodoListItemBindingModel.Description, false)));
                 if (creatTodoListItemId.HasValue)
                 {
                     return new JsonResult(new AlertApiModel("Create Todo List Item", $"{createTodoListItemBindingModel.Title} created.", new { Id = creatTodoListItemId.Value }));

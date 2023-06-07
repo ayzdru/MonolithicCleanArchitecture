@@ -2,6 +2,6 @@
 
 namespace CleanArchitecture.Core;
 
-public abstract class BaseEvent : INotification
+public abstract class BaseNotification : INotification
 {
 }

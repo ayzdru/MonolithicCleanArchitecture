@@ -1,8 +1,8 @@
 ﻿using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
-using EFCore.BulkExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +32,8 @@ namespace CleanArchitecture.Application.Commands
             }
 
             public async Task<int> Handle(UpdateTodoListItemCommand request, CancellationToken cancellationToken)
-            {
-                var updateColumns = new List<string> { nameof(TodoListItem.IsDone) };
-                var todoListItem = new TodoListItem();
-                todoListItem.ChangeStatus(request.IsDone);
-                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).BatchUpdateAsync(todoListItem, updateColumns, cancellationToken);
+            {                
+                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsDone, request.IsDone));
 
                 if (affected == 0)
                 {

@@ -29,24 +29,24 @@ namespace CleanArchitecture.Core
                 LastModified = DateTime.Now;
             }
         }
-        private readonly List<BaseEvent> _domainEvents = new();
+        private readonly List<BaseNotification> _notifications = new();
 
         [NotMapped]
-        public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents.AsReadOnly();
+        public IReadOnlyCollection<BaseNotification> Notifications => _notifications.AsReadOnly();
 
-        public void AddDomainEvent(BaseEvent domainEvent)
+        public void AddNotification(BaseNotification baseNotification)
         {
-            _domainEvents.Add(domainEvent);
+            _notifications.Add(baseNotification);
         }
 
-        public void RemoveDomainEvent(BaseEvent domainEvent)
+        public void RemoveNotification(BaseNotification baseNotification)
         {
-            _domainEvents.Remove(domainEvent);
+            _notifications.Remove(baseNotification);
         }
 
-        public void ClearDomainEvents()
+        public void ClearNotifications()
         {
-            _domainEvents.Clear();
+            _notifications.Clear();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
-using EFCore.BulkExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace CleanArchitecture.Application.Commands
 
             public async Task<int> Handle(DeleteTodoListCommand request, CancellationToken cancellationToken)
             {
-                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).BatchDeleteAsync(cancellationToken);
+                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).ExecuteDeleteAsync(cancellationToken);
 
                 if (affected == 0)
                 {
