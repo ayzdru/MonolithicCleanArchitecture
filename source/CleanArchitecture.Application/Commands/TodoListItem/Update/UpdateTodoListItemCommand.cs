@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Core.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,15 +26,16 @@ namespace CleanArchitecture.Application.Commands
         public class UpdateTodoListItemCommandHandler : IRequestHandler<UpdateTodoListItemCommand, int>
         {
             private readonly IApplicationDbContext _applicationDbContext;
-
-            public UpdateTodoListItemCommandHandler(IApplicationDbContext applicationDbContext)
+            private readonly ICurrentUserService _currentUserService;
+            public UpdateTodoListItemCommandHandler(IApplicationDbContext applicationDbContext, ICurrentUserService currentUserService)
             {
                 _applicationDbContext = applicationDbContext;
+                _currentUserService = currentUserService;
             }
 
             public async Task<int> Handle(UpdateTodoListItemCommand request, CancellationToken cancellationToken)
             {                
-                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsDone, request.IsDone));
+                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsDone, request.IsDone).SetProperty(b => b.LastModifiedByUserId, _currentUserService.UserId).SetProperty(b => b.LastModified, DateTime.Now));
 
                 if (affected == 0)
                 {

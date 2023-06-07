@@ -9,6 +9,8 @@ using CleanArchitecture.Infrastructure.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,11 +28,13 @@ namespace CleanArchitecture.Infrastructure.IoC
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
+            services.AddTransient<IEmailSender, EmailService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddDefaultIdentity<ApplicationUser>(o => o.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
