@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Interceptors;
 
-public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
+public class EntitySaveChangesInterceptor : SaveChangesInterceptor
 {
     private readonly ICurrentUserService _currentUserService;
 
-    public AuditableEntitySaveChangesInterceptor(
+    public EntitySaveChangesInterceptor(
         ICurrentUserService currentUserService
        )
     {

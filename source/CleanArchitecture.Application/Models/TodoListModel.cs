@@ -10,7 +10,7 @@ namespace CleanArchitecture.Application.Models
     {
         public Guid Id { get; private set; }
         public string Title { get; private set; }
-        public int ItemsCount { get; set; }
+        public int ItemsCount { get; private set; }
         public TodoListModel(Guid id, string title, int itemsCount)
         {
             Id = id;

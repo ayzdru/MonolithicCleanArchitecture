@@ -37,7 +37,7 @@ namespace CleanArchitecture.Infrastructure.IoC
             services.AddDefaultIdentity<ApplicationUser>(o => o.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            services.AddScoped<EntitySaveChangesInterceptor>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
             if (webHostEnvironment.IsDevelopment())
             {

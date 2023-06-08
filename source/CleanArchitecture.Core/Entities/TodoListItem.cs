@@ -6,11 +6,11 @@ namespace CleanArchitecture.Core.Entities
 {
     public class TodoListItem : BaseEntity
     {     
-        public TodoList TodoList { get; private set; }
-        public Guid TodoListId { get; private set; }
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public bool IsDone { get; private set; }
+        public TodoList TodoList { get; protected set; }
+        public Guid TodoListId { get; protected set; }
+        public string Title { get; protected set; }
+        public string Description { get; protected set; }
+        public bool IsDone { get; protected set; }
        
         public TodoListItem(Guid todoListId, string title, string description, bool isDone)
         {
