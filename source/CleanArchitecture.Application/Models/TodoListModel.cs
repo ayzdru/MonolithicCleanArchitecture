@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Models
 {
-    public class TodoListModel
+    public record TodoListModel
     {
-        public Guid Id { get; private set; }
-        public string Title { get; private set; }
-        public int ItemsCount { get; private set; }
+        public Guid Id { get; init; }
+        public string Title { get; init; }
+        public int ItemsCount { get; init; }
         public TodoListModel(Guid id, string title, int itemsCount)
         {
             Id = id;

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Models
 {
-    public class TodoListItemModel
+    public record TodoListItemModel
     {       
-        public Guid TodoListItemId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public bool IsDone { get; set; }
+        public Guid TodoListItemId { get; init; }
+        public string Title { get; init; }
+        public string Description { get; init; }
+        public bool IsDone { get; init; }
         public TodoListItemModel(Guid todoListItemId, string title, string description, bool isDone)
         {
             TodoListItemId = todoListItemId;
