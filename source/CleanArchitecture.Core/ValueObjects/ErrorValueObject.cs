@@ -13,5 +13,10 @@ namespace CleanArchitecture.Core.ValueObjects
             Key = key;
             Message = message;
         }
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Key;
+            yield return Message;
+        }
     }
 }

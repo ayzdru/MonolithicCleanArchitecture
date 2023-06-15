@@ -31,6 +31,10 @@
             margin-top: -2px;
             margin-bottom: 15px;
         }
+
+        .list-group-item.active{
+            color: black !important;
+        }
     </style>
 }
 <h1>@ViewData["Title"]</h1>
@@ -46,7 +50,7 @@
         <ul id="TodoLists" class="list-group">
             @foreach (var todoList in Model.TodoList)
             {
-                <li id="TodoList-@todoList.Id" data-id="@todoList.Id" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <li id="TodoList-@todoList.Id" data-id="@todoList.Id" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background-color:@todoList.ColourCode;">
                     @todoList.Title
                     <span class="badge badge-primary badge-pill">@todoList.ItemsCount</span>
                 </li>
@@ -178,7 +182,7 @@
         $('#CreateTodoListForm').on('submit', function (e) {
             formSubmit(this, 'CreateTodoListModal', function (data) {
                 var title = $('#CreateTodoListBindingModel_Title').val();
-                $('#TodoLists').append('<li id="TodoList-' + data.body.id + '" data-id="' + data.body.id + '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">' + title + '<span class="badge badge-primary badge-pill">0</span></li>');
+                $('#TodoLists').append('<li id="TodoList-' + data.body.id + '" data-id="' + data.body.id + '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background-color:' + data.body.colourCode + ';">' + title + '<span class="badge badge-primary badge-pill">0</span></li>');
                 clearForm('CreateTodoListForm');
             });
             return false;

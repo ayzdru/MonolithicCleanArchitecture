@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using CleanArchitecture.Application.Models;
 using CleanArchitecture.Web.ApiModels.Response;
+using CleanArchitecture.Core.ValueObjects;
 
 namespace CleanArchitecture.Web.Pages
 {
@@ -28,11 +29,12 @@ namespace CleanArchitecture.Web.Pages
         public async Task<IActionResult> OnPostCreateTodoList(CreateTodoListBindingModel createTodoListBindingModel)
         {
             if(ModelState.IsValid)
-            {
-                var creatTodoListId = await Mediator.Send(new CreateTodoListCommand(new TodoList(createTodoListBindingModel.Title)));
+            { 
+                var randomColour = Colour.SupportedColours.OrderBy(q => Guid.NewGuid()).First();
+                var creatTodoListId = await Mediator.Send(new CreateTodoListCommand(new TodoList(createTodoListBindingModel.Title, randomColour)));
                 if(creatTodoListId.HasValue)
                 {
-                    return new JsonResult(new AlertApiModel("Create Todo List", $"{createTodoListBindingModel.Title} created.", new { Id = creatTodoListId.Value }));
+                    return new JsonResult(new AlertApiModel("Create Todo List", $"{createTodoListBindingModel.Title} created.", new { Id = creatTodoListId.Value, ColourCode = randomColour.Code }));
                 }
                 else
                 {

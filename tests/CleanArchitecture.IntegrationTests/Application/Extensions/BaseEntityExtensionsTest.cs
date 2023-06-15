@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.ValueObjects;
 using CleanArchitecture.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace CleanArchitecture.IntegrationTests.Application.Extensions
         [Fact]
         public void GetById()
         {
-            var todoList = new TodoList("TEST");
+            var todoList = new TodoList("TEST", Colour.White);
             _dbContext.TodoLists.Add(todoList);
             _dbContext.SaveChanges();
             var getByIdTodoList =_dbContext.TodoLists.GetById(todoList.Id).SingleOrDefault();

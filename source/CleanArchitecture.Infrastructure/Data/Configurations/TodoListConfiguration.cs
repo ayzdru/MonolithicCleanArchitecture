@@ -14,6 +14,12 @@ namespace CleanArchitecture.Infrastructure.Data.Configurations
         {
             base.Configure(builder);
             builder.Property(b => b.Title).HasMaxLength(Constants.TodoList.TitleMaximumLength).IsRequired(Constants.TodoList.TitleRequired);
+            builder.OwnsOne(b => b.Colour, ba=> {
+                ba.Property(p => p.Code).HasMaxLength(Constants.Colour.CodeMaximumLength).IsRequired(Constants.Colour.CodeIsRequired);
+                
+            });
+            builder.Navigation(o => o.Colour)
+                    .IsRequired(Constants.Colour.IsRequired);
             builder.Metadata.FindNavigation(nameof(TodoList.TodoListItems)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }        
     }

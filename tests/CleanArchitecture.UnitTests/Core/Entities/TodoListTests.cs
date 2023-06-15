@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace CleanArchitecture.UnitTests.Core.Entities
         [Fact]
         public void TodoList_Add_CountIsEqualOne()
         {
-            var todoList = new TodoList("TEST");
+            var todoList = new TodoList("TEST", Colour.Yellow);
             todoList.Add(new TodoListItem("TEST", "TEST"));
             Assert.True(todoList.TodoListItems.Count == 1);
         }

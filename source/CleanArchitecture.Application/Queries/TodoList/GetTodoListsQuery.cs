@@ -24,7 +24,7 @@ namespace CleanArchitecture.Application.Queries
 
             public Task<List<TodoListModel>> Handle(GetTodoListsQuery request, CancellationToken cancellationToken)
             {
-                return _applicationDbContext.TodoLists.Select(q => new TodoListModel(q.Id, q.Title, q.TodoListItems.Count())).ToListAsync(cancellationToken);
+                return _applicationDbContext.TodoLists.Select(q => new TodoListModel(q.Id, q.Title, q.TodoListItems.Count(), q.Colour.Code)).ToListAsync(cancellationToken);
             }
         }
     }

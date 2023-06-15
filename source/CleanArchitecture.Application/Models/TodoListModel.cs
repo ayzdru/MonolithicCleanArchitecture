@@ -11,11 +11,13 @@ namespace CleanArchitecture.Application.Models
         public Guid Id { get; init; }
         public string Title { get; init; }
         public int ItemsCount { get; init; }
-        public TodoListModel(Guid id, string title, int itemsCount)
+        public string ColourCode { get; init; }
+        public TodoListModel(Guid id, string title, int itemsCount, string colourCode)
         {
             Id = id;
             Title = title;
             ItemsCount = itemsCount;
+            ColourCode = colourCode;
         }
     }
 }
