@@ -7,6 +7,7 @@ using CleanArchitecture.Infrastructure.Interceptors;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -43,6 +44,6 @@ namespace CleanArchitecture.Infrastructure.Data
             await _mediator.DispatchNotifications(this);
 
             return await base.SaveChangesAsync(cancellationToken);
-        }
+        }       
     }
 }

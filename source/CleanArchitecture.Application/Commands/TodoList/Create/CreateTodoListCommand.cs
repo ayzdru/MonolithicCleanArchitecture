@@ -29,13 +29,15 @@ namespace CleanArchitecture.Application.Commands
             }
             public async Task<Guid?> Handle(CreateTodoListCommand request, CancellationToken cancellationToken)
             {
+                await using var transaction = await _applicationDbContext.Database.BeginTransactionAsync();
                 _applicationDbContext.TodoLists.Add(request.TodoList);                    
                 var affected = await _applicationDbContext.SaveChangesAsync(cancellationToken);
                 if (affected != 0)
                 {
                     await _mediator.Publish(new TodoListCreatedNotification { Title = request.TodoList.Title }, cancellationToken);
+                    await transaction.CommitAsync();
                     return request.TodoList.Id;
-                }
+                }               
                 return null;
             }
         }
