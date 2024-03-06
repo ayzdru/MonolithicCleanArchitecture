@@ -19,15 +19,12 @@ namespace CleanArchitecture.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext
     {
-        private readonly IMediator _mediator;
-        private readonly EntitySaveChangesInterceptor _entitySaveChangesInterceptor;
         public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IMediator mediator, EntitySaveChangesInterceptor entitySaveChangesInterceptor)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
              : base(options)
         {
-            _mediator = mediator;
-            _entitySaveChangesInterceptor = entitySaveChangesInterceptor;
+
         }      
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -35,15 +32,7 @@ namespace CleanArchitecture.Infrastructure.Data
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.AddInterceptors(_entitySaveChangesInterceptor);
-        }
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            await _mediator.DispatchNotifications(this);
-
-            return await base.SaveChangesAsync(cancellationToken);
-        }       
+      
+   
     }
 }

@@ -26,7 +26,7 @@ namespace CleanArchitecture.IntegrationTests.Application
             builder.UseInMemoryDatabase("cleanarchitecture")
                    .UseInternalServiceProvider(serviceProvider);
 
-            _dbContext = new ApplicationDbContext(builder.Options,null,null);
+            _dbContext = new ApplicationDbContext(builder.Options);
            
         }
         

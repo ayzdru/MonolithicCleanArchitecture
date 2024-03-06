@@ -8,7 +8,7 @@ namespace CleanArchitecture.Core.Entities
     public class TodoList : BaseEntity
     {
         public string Title { get; private set; }
-        public Colour Colour { get; set; } = Colour.White;
+        public Colour Colour { get; private set; } = Colour.White;
         private readonly List<TodoListItem>  _todoListItems = new List<TodoListItem>();
         public IReadOnlyCollection<TodoListItem> TodoListItems => _todoListItems.AsReadOnly();
         public TodoList(string title)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Extensions
 {
-    public static class AuditableEntitySaveChangesExtensions
+    public static class EntitySaveChangesExtensions
     {
         public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
         entry.References.Any(r =>

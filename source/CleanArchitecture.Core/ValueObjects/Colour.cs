@@ -8,15 +8,7 @@ using System.Threading.Tasks;
 namespace CleanArchitecture.Core.ValueObjects
 {
     public class Colour : ValueObject
-    {
-        static Colour()
-        {
-        }
-
-        private Colour()
-        {
-        }
-
+    {        
         private Colour(string code)
         {
             Code = code;
@@ -24,7 +16,7 @@ namespace CleanArchitecture.Core.ValueObjects
 
         public static Colour From(string code)
         {
-            var colour = new Colour { Code = code };
+            var colour = new Colour(code);
 
             if (!SupportedColours.Contains(colour))
             {
