@@ -7,13 +7,13 @@ using System.Text;
 
 namespace CleanArchitecture.Infrastructure.Common
 {
-    public abstract class BaseConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
+    public abstract class BaseConfiguration<T> : AuditableConfiguration<T>, IEntityTypeConfiguration<T> where T : BaseEntity
     {
-        public virtual void Configure(EntityTypeBuilder<T> builder)
+        public override void Configure(EntityTypeBuilder<T> builder)
         {
+            base.Configure(builder);
             builder.HasKey(b => b.Id);
             builder.Property(b => b.Id).ValueGeneratedOnAdd();
-            builder.Property(p => p.RowVersion).IsRowVersion();
         }
     }
 }

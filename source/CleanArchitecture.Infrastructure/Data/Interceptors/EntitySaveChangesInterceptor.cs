@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Core;
+using CleanArchitecture.Core.Common;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ public class EntitySaveChangesInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<BaseEntity>())
+        foreach (var entry in context.ChangeTracker.Entries<AuditableEntity>())
         {
             if (entry.State == EntityState.Added)
             {
