@@ -35,13 +35,18 @@ namespace CleanArchitecture.Application.Commands
             }
 
             public async Task<int> Handle(UpdateTodoListItemCommand request, CancellationToken cancellationToken)
-            {                
-                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsDone, request.IsDone).SetProperty(b => b.LastModifiedByUserId, _currentUserService.UserId).SetProperty(b => b.LastModified, DateTime.Now));
+            {
+                var entity = await _applicationDbContext.TodoListItems.SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-                if (affected == 0)
+                if (entity == null)
                 {
                     throw new NotFoundException(nameof(TodoList), request.Id);
-                }              
+                }
+
+                entity.SetIsDone(request.IsDone);
+
+                _applicationDbContext.TodoListItems.Update(entity);
+                var affected = await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
                 return affected;
             }

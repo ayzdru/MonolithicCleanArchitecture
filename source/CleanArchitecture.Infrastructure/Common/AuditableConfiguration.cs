@@ -13,6 +13,7 @@ namespace CleanArchitecture.Infrastructure.Common
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
             builder.Property(p => p.RowVersion).IsRowVersion();
+            builder.HasQueryFilter(x => x.IsDeleted == false && x.IsActive == true);
         }
     }
 }

@@ -24,6 +24,12 @@ namespace CleanArchitecture.Core.Entities
             Title = title;
             Description = description;
         }
-       
+        public void SetIsDone(bool isDone)
+        {
+            if (IsDone == isDone)
+                return;
+
+            IsDone = isDone;
+        }
     }
 }

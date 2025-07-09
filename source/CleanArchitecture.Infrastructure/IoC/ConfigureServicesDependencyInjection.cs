@@ -43,14 +43,11 @@ namespace CleanArchitecture.Infrastructure.IoC
                     configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddDefaultIdentity<ApplicationUser>(o => o.SignIn.RequireConfirmedAccount = false)
-                    .AddRoles<ApplicationRole>()
+            services.AddDefaultIdentity<User>(o => o.SignIn.RequireConfirmedAccount = false)
+                    .AddRoles<Role>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-            if (webHostEnvironment.IsDevelopment())
-            {
-                services.AddScoped<ApplicationDbContextInitialiser>();
-            }
+            services.AddScoped<ApplicationDbContextInitialiser>();
             services.AddApplication();
             return services;
         }

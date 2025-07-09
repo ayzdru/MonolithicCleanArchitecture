@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static Constants;
 
 namespace CleanArchitecture.Application.Commands
 {    
@@ -33,11 +34,13 @@ namespace CleanArchitecture.Application.Commands
 
             public async Task<int> Handle(DeleteTodoListItemCommand request, CancellationToken cancellationToken)
             {
-                var affected = await _applicationDbContext.TodoListItems.GetById(request.Id).ExecuteDeleteAsync(cancellationToken);
+                var entity = _applicationDbContext.TodoListItems.GetById(request.Id).SingleOrDefault();
+               _applicationDbContext.TodoListItems.Remove(entity);
+                var affected =  await _applicationDbContext.SaveChangesAsync();
 
                 if (affected == 0)
                 {
-                    throw new NotFoundException(nameof(TodoList), request.Id);
+                    throw new NotFoundException(nameof(Core.Entities.TodoListItem), request.Id);
                 }              
 
                 return affected;

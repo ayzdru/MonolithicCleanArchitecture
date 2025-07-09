@@ -18,9 +18,14 @@ namespace CleanArchitecture.Infrastructure.Data.Configurations
                 ba.Property(p => p.Code).HasMaxLength(Constants.Colour.CodeMaximumLength).IsRequired(Constants.Colour.CodeIsRequired);
                 
             });
-            builder.Navigation(o => o.Colour)
-                    .IsRequired(Constants.Colour.IsRequired);
-            builder.Metadata.FindNavigation(nameof(TodoList.TodoListItems)).SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.OwnsOne(b => b.Colour, ba =>
+            {
+                ba.Property(p => p.Code)
+                    .HasColumnName("ColourCode")
+                    .HasMaxLength(Constants.Colour.CodeMaximumLength)
+                    .IsRequired(Constants.Colour.CodeIsRequired);
+            });
+            builder.Navigation(n=> n.TodoListItems).UsePropertyAccessMode(PropertyAccessMode.Field);
         }        
     }
 }

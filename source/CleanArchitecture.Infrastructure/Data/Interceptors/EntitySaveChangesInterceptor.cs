@@ -44,12 +44,17 @@ public class EntitySaveChangesInterceptor : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.Create(_currentUserService.UserId);
+                entry.Entity.SetCreated(_currentUserService.UserId);
             } 
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                entry.Entity.Update(_currentUserService.UserId);
+                entry.Entity.SetUpdated(_currentUserService.UserId);
+            }
+            if (entry.State == EntityState.Deleted)
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.SetDeleted(_currentUserService.UserId);
             }
         }
     }

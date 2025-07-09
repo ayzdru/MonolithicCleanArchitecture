@@ -22,23 +22,28 @@ namespace CleanArchitecture.Application.Commands
         public Guid Id { get; set; }
 
 
-        public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoListCommand, int>
+        public class DeleteTodoListCommandHandler : IRequestHandler<DeleteTodoListCommand, int>
         {
             private readonly IApplicationDbContext _applicationDbContext;
 
-            public DeleteTodoItemCommandHandler(IApplicationDbContext applicationDbContext)
+            public DeleteTodoListCommandHandler(IApplicationDbContext applicationDbContext)
             {
                 _applicationDbContext = applicationDbContext;
             }
 
             public async Task<int> Handle(DeleteTodoListCommand request, CancellationToken cancellationToken)
             {
-                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).ExecuteDeleteAsync(cancellationToken);
+                var todoList = await _applicationDbContext.TodoLists
+                    .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-                if (affected == 0)
+                if (todoList == null)
                 {
                     throw new NotFoundException(nameof(TodoList), request.Id);
-                }              
+                }
+
+                _applicationDbContext.TodoLists.Remove(todoList);
+
+                var affected = await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
                 return affected;
             }

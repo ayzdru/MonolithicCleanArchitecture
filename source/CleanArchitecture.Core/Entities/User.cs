@@ -5,8 +5,7 @@ using System.Text;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class ApplicationRole : IdentityRole<Guid>
+    public class User : IdentityUser<Guid>
     {
-
     }
 }

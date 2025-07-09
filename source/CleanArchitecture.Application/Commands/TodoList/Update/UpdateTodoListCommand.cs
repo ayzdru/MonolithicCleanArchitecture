@@ -37,13 +37,17 @@ namespace CleanArchitecture.Application.Commands
 
             public async Task<int> Handle(UpdateTodoListCommand request, CancellationToken cancellationToken)
             {
-                
-                var affected = await _applicationDbContext.TodoLists.GetById(request.Id).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.Title, request.Title).SetProperty(b=> b.LastModifiedByUserId, _currentUserService.UserId).SetProperty(b=> b.LastModified , DateTime.Now));
+                var todoList = await _applicationDbContext.TodoLists
+                    .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-                if (affected == 0)
+                if (todoList == null)
                 {
                     throw new NotFoundException(nameof(TodoList), request.Id);
-                }              
+                }
+
+                todoList.SetTitle(request.Title);
+                _applicationDbContext.TodoLists.Update(todoList);
+                  var affected = await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
                 return affected;
             }

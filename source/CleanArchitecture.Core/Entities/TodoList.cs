@@ -24,6 +24,7 @@ namespace CleanArchitecture.Core.Entities
         {
             _todoListItems.Add(item);
         }
+        public void SetTitle(string title) { Title = title; }
         public void UpdateColour(Colour colour)
         {
             Colour = colour;

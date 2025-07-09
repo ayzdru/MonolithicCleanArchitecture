@@ -8,26 +8,20 @@ namespace CleanArchitecture.Core.Common
 {
     public abstract class AuditableEntity
     {
-        public ApplicationUser? CreatedByUser { get; protected set; }
+        public User? CreatedByUser { get; protected set; }
         public Guid? CreatedByUserId { get; protected set; }
-        public DateTime Created { get; protected set; }
-        public ApplicationUser? LastModifiedByUser { get; protected set; }
-        public Guid? LastModifiedByUserId { get; protected set; }
-        public DateTime? LastModified { get; protected set; }
+        public DateTime CreatedDate { get; protected set; }
+        public User? UpdatedByUser { get; protected set; }
+        public Guid? UpdatedByUserId { get; protected set; }
+        public DateTime? UpdatedDate { get; protected set; }
         public byte[] RowVersion { get; protected set; } = Array.Empty<byte>();
-        public void Create(Guid? createdByUserId)
-        {
-            CreatedByUserId = createdByUserId;
-            Created = DateTime.Now;
-        }
-        public void Update(Guid? lastModifiedByUserId)
-        {
-            if (lastModifiedByUserId.HasValue)
-            {
-                LastModifiedByUserId = lastModifiedByUserId;
-                LastModified = DateTime.Now;
-            }
-        }
+        public User? DeletedByUser { get; protected set; }
+        public Guid? DeletedByUserId { get; protected set; }
+        public DateTime? DeletedDate { get; protected set; }
+        public bool IsDeleted { get; protected set; } = false;
+        public bool IsActive { get; protected set; } = true;
+        
+    
         private readonly List<BaseNotification> _notifications = new();
 
         [NotMapped]
@@ -46,6 +40,29 @@ namespace CleanArchitecture.Core.Common
         public void ClearNotifications()
         {
             _notifications.Clear();
+        }
+        public void SetCreated(Guid? createdByUserId)
+        {
+            CreatedByUserId = createdByUserId;
+            CreatedDate = DateTime.Now;
+        }
+        public void SetUpdated(Guid? updatedByUserId)
+        {
+            UpdatedByUserId = updatedByUserId;
+            UpdatedDate = DateTime.Now;
+        }
+        public void SetDeleted(Guid? deletedByUserId)
+        {
+            DeletedByUserId = deletedByUserId;
+            DeletedDate = DateTime.Now;
+            IsDeleted = true;
+        }
+        public void SetActive(bool isActive, Guid? updatedByUserId)
+        {
+            if (IsActive != isActive)
+            {
+                IsActive = isActive;
+            }
         }
     }
 }
