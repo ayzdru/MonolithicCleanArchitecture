@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CleanArchitecture.Core
 {
-    public abstract class BaseEntity : AuditableEntity
+    public abstract class BaseEntity : BaseAuditableEntity
     {
         public Guid Id { get; protected set; }
     }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CleanArchitecture.Infrastructure.Common
 {
-    public abstract class BaseConfiguration<T> : AuditableConfiguration<T>, IEntityTypeConfiguration<T> where T : BaseEntity
+    public abstract class BaseConfiguration<T> : BaseAuditableConfiguration<T>, IEntityTypeConfiguration<T> where T : BaseEntity
     {
         public override void Configure(EntityTypeBuilder<T> builder)
         {

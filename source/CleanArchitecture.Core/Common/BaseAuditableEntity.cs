@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CleanArchitecture.Core.Common
 {
-    public abstract class AuditableEntity
+    public abstract class BaseAuditableEntity
     {
         public User? CreatedByUser { get; protected set; }
         public Guid? CreatedByUserId { get; protected set; }

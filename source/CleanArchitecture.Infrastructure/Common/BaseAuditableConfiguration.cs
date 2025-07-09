@@ -8,7 +8,7 @@ using CleanArchitecture.Core.Common;
 
 namespace CleanArchitecture.Infrastructure.Common
 {
-    public abstract class AuditableConfiguration<T> : IEntityTypeConfiguration<T> where T : AuditableEntity
+    public abstract class BaseAuditableConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseAuditableEntity
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
