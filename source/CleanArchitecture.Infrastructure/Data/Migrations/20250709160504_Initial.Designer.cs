@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250709155523_Initial")]
+    [Migration("20250709160504_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -354,7 +354,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                 {
                     b.HasOne("CleanArchitecture.Core.Entities.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("CreatedByUserId");
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CleanArchitecture.Core.Entities.User", "DeletedByUser")
                         .WithMany()
@@ -362,7 +363,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
 
                     b.HasOne("CleanArchitecture.Core.Entities.User", "UpdatedByUser")
                         .WithMany()
-                        .HasForeignKey("UpdatedByUserId");
+                        .HasForeignKey("UpdatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("CleanArchitecture.Core.ValueObjects.Colour", "Colour", b1 =>
                         {
@@ -396,7 +398,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                 {
                     b.HasOne("CleanArchitecture.Core.Entities.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("CreatedByUserId");
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CleanArchitecture.Core.Entities.User", "DeletedByUser")
                         .WithMany()
@@ -410,7 +413,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
 
                     b.HasOne("CleanArchitecture.Core.Entities.User", "UpdatedByUser")
                         .WithMany()
-                        .HasForeignKey("UpdatedByUserId");
+                        .HasForeignKey("UpdatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedByUser");
 

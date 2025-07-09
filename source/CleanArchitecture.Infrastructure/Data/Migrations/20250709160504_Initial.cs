@@ -95,7 +95,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                         name: "FK_TodoLists_Users_CreatedByUserId",
                         column: x => x.CreatedByUserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TodoLists_Users_DeletedByUserId",
                         column: x => x.DeletedByUserId,
@@ -105,7 +106,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                         name: "FK_TodoLists_Users_UpdatedByUserId",
                         column: x => x.UpdatedByUserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -225,7 +227,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                         name: "FK_TodoListItems_Users_CreatedByUserId",
                         column: x => x.CreatedByUserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TodoListItems_Users_DeletedByUserId",
                         column: x => x.DeletedByUserId,
@@ -235,7 +238,8 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                         name: "FK_TodoListItems_Users_UpdatedByUserId",
                         column: x => x.UpdatedByUserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
