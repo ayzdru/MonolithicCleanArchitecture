@@ -58,7 +58,7 @@ public class ApplicationDbContextInitialiser
     {
         // Default roles
         var administratorRole = new Role();
-
+        administratorRole.Name = "Administrator";
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
