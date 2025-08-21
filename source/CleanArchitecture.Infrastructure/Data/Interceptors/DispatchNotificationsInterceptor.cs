@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Core.Common;
 
 namespace CleanArchitecture.Infrastructure.Data.Interceptors
 {

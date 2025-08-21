@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Core.ValueObjects;
+﻿using CleanArchitecture.Core.Common;
+using CleanArchitecture.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
